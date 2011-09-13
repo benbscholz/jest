@@ -185,3 +185,59 @@ textarea { overflow: auto; vertical-align: top; resize: vertical; }
 /* Colors for form validity */
 input:valid, textarea:valid { }
 input:invalid, textarea:invalid { background-color: #f0dddd; }
+
+/* Jest styles */
+
+body                { width: 960px;
+                      margin: 0 auto 0 auto; }
+                  
+ #stat-summary      { width: 300px; 
+                      height: 150px;
+                      background-color: #909090;
+                      color: #fff;
+                      text-shadow: 0 -1px 0 #555;
+                      -webkit-border-radius: 2px; 
+                      -moz-border-radius: 2px; 
+                      border-radius: 2px; 
+                      -moz-background-clip: padding; 
+                      -webkit-background-clip: padding-box; 
+                      background-clip: padding-box; 
+                      -webkit-box-shadow: 0px 1px 1px #222; 
+                      -moz-box-shadow: 0px 1px 1px #222; 
+                      box-shadow: 0px 1px 1px #222; }
+     
+#jest-header        { margin: 5px 0 0 10px; }
+
+#user-info,
+#passed-number,
+#test-time          { text-align: center;
+                      width: 125px;
+                      float: top;
+                      margin-left: 155px; }
+                      
+#user-info          { margin-top: -90px; }
+
+#success-light      { display: block;
+                      height: 100px;
+                      width: 125px; 
+                      margin: 5px 0 0 10px;
+                      background-color: green;
+                      border: 1px solid #444;
+                      border-bottom: 1px solid #f0f0f0;
+                      -webkit-border-radius: 3px; 
+                      -moz-border-radius: 3px; 
+                      border-radius: 3px; 
+                      -moz-background-clip: padding; 
+                      -webkit-background-clip: padding-box; 
+                      background-clip: padding-box;
+                      -webkit-box-shadow: inset 0px 0 1px #222; 
+                      -moz-box-shadow: inset 0px 0 1px #222; 
+                      box-shadow: inset 0px 0 1px #222; }
+                      
+.result             { margin-left: 25px; }
+
+
+
+
+
+
