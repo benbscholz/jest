@@ -188,10 +188,10 @@ input:invalid, textarea:invalid { background-color: #f0dddd; }
 
 /* Jest styles */
 
-body                { width: 960px;
+body                { width: 760px;
                       margin: 0 auto 0 auto; }
                   
- #stat-summary      { width: 300px; 
+ #stat-summary      { width: 225px; 
                       height: 150px;
                       background-color: #909090;
                       color: #fff;
@@ -206,33 +206,15 @@ body                { width: 960px;
                       -moz-box-shadow: 0px 1px 1px #222; 
                       box-shadow: 0px 1px 1px #222; }
      
-#jest-header        { margin: 5px 0 0 10px; }
+#jest-header        { margin: 5px 0 0 0;
+                      padding-top: 10px;
+                      text-align: center; }
 
 #user-info,
 #passed-number,
 #test-time          { text-align: center;
-                      width: 125px;
-                      float: top;
-                      margin-left: 155px; }
-                      
-#user-info          { margin-top: -90px; }
-
-#success-light      { display: block;
-                      height: 100px;
-                      width: 125px; 
-                      margin: 5px 0 0 10px;
-                      background-color: green;
-                      border: 1px solid #444;
-                      border-bottom: 1px solid #f0f0f0;
-                      -webkit-border-radius: 3px; 
-                      -moz-border-radius: 3px; 
-                      border-radius: 3px; 
-                      -moz-background-clip: padding; 
-                      -webkit-background-clip: padding-box; 
-                      background-clip: padding-box;
-                      -webkit-box-shadow: inset 0px 0 1px #222; 
-                      -moz-box-shadow: inset 0px 0 1px #222; 
-                      box-shadow: inset 0px 0 1px #222; }
+                      width: 225px;
+                      float: top; }
                       
 .result             { margin-left: 25px; }
 
