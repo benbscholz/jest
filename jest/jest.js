@@ -11,9 +11,9 @@ jest = function (moduleName) {
 };
 
 var Jest = {
-    yes : function (testFunction, message) {
+    yes : function (given, message) {
         // cast to boolean
-        var result = !!testFunction;
+        var result = !!given;
         var testResult = {
             boolResult : result,
             msgResult : message
@@ -22,31 +22,55 @@ var Jest = {
         window.results.push(testResult);
     },
     
-    no : function (testFunction, message) {
+    no : function (given, message) {
         // cast to boolean
-        var result = !testFunction;
-        var result = {
+        var result = !given;
+        var testResult = {
             boolResult : result,
             msgResult : message
         };
         if (!result) window.failed += 1;
-        window.results.push(result);
+        window.results.push(testResult);
     },
     
-    alike : function (testFunction, expected, message) {
-        
+    alike : function (given, expected, message) {
+        var result = (given == expected);
+        var testResult = {
+            boolResult : result,
+            msgResult : message
+        };
+        if (!result) window.failed += 1;
+        window.results.push(testResult);
     },
     
-    unlike : function (testFunction, expected, message) {
-        
+    unlike : function (given, expected, message) {
+        var result = (given != expected);
+        var testResult = {
+            boolResult : result,
+            msgResult : message
+        }
+        if (!result) window.failed += 1;
+        window.results.push(testResult);
     },
     
-    same : function (testFunction, expected, message) {
-        
+    same : function (given, expected, message) {
+        var result = Jest.isEqual(given, expected);
+        var testResult = {
+            boolResult : result,
+            msgResult : message
+        };
+        if (!result) window.failed += 1;
+        window.results.push(testResult);
     },
     
-    different : function (testFunction, expected, message) {
-        
+    different : function (given, expected, message) {
+        var result = !(Jest.isEqual(given, expected));
+        var testResult = {
+            boolResult : result,
+            msgResult : message
+        };
+        if (!result) window.failed += 1;
+        window.results.push(testResult);
     }
 };
 
@@ -63,7 +87,7 @@ extend(window, Jest);
 extend(Jest, {
     parseStats : function () {
         var statsHtml = [],
-            bodyInit = '<div id=\"stat-summary\"><h1 id=\"jest-header\">Jest Test Suite</h1><span id=\"success-light\"></span><p id=\"user-info\">';
+            bodyInit = '<div id=\"stat-summary\"><h1 id=\"jest-header\">Jest Test Suite</h1><p id=\"user-info\">';
         statsHtml.push(bodyInit);
         statsHtml.push(getBrowserString());
         statsHtml.push('</p>');
@@ -94,6 +118,41 @@ extend(Jest, {
         }
         resultsHtml.push('</ol>');
         return resultsHtml.join('');
+    },
+    
+    isEqual : function (a, b) {
+        var i,
+            prop,
+            aType = typeof a,
+            bType = typeof b;
+            
+        if (a === b) return true;
+        if (aType !== bType) return false;
+        
+        if (this.isArray(a) && this.isArray(b)) {
+            if (a.length !== b.length) return false;
+            
+            for (i = 0; i < a.length; i+=1) 
+                if (a[i] !== b[i]) return false;
+
+            return true;
+        }
+        
+        if (aType !== 'object') return false;
+        for (prop in a) {
+            if (!b.hasOwnProperty(prop)) return false;
+            if (a.hasOwnProperty(prop) && b.hasOwnProperty(prop))
+                return this.isEqual(a[prop], b[prop]);
+        }
+    },
+    
+    isArray :  function (a) {
+        if (a && typeof a === 'object' && a.constructor === Array)
+            return true;
+        else if (Object.prototype.toString.call(a) == '[object Array]')
+            return true;
+        else
+            return false;
     }
 });
 
@@ -132,7 +191,6 @@ var getBrowserString = function () {
         version = parseVersion(1);
         browser = 'Firefox';
     }
-    console.log(browser + ' ' + version);
     return browser + ' ' + version;
 };
 
