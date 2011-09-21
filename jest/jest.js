@@ -15,16 +15,16 @@ var Test = function (module, name, expected, callback) {
 
 Test.prototype = {
     setup : function () {
-        var jestTests = document.getElementById('jest-tests'),
-            module = document.getElementById(this.module.split(' ').join('-')),
-            testList = document.createElement('ol'),
-            testsHeader = document.createElement('h3'),
+        var jestTests = byId('jest-tests'),
+            module = byId(this.module.split(' ').join('-')),
+            testList = create('ol'),
+            testsHeader = document.create('h3'),
             moduleHeader;
         
         if (!module) {
-            module = document.createElement('ol');
+            module = document.create('ol');
             module.id = this.module.split(' ').join('-');
-            moduleHeader = document.createElement('h2');
+            moduleHeader = document.create('h2');
             moduleHeader.innerHTML = this.module;
             module.appendChild(moduleHeader);
         }
@@ -46,18 +46,18 @@ Test.prototype = {
     },
     
     finish : function () {
-        var module = document.getElementById(this.module.split(' ').join('-')),
-            testList = document.getElementById(this.name.split(' ').join('-')),
+        var module = byId(this.module.split(' ').join('-')),
+            testList = byId(this.name.split(' ').join('-')),
             test,
             moduleHeader,
             header,
             i;
 
-        header = document.getElementById(this.name.split(' ').join('-') + '-header');
+        header = byId(this.name.split(' ').join('-') + '-header');
         header.innerHTML = this.name + ' -- ' + (this.actual - this.failed) + ' of ' + this.actual + ' passed';
         
         for (i = 0; i < this.results.length; i += 1) {
-            test = document.createElement('li');
+            test = document.create('li');
             test.innerHTML = this.results[i];
             testList.appendChild(test);
         }
@@ -151,10 +151,10 @@ expose(Jest, {
     
     finish : function () {
         var stat = Jest.data.jestStats;
-            browser = document.getElementById('user-info'),
-            passedNumber = document.getElementById('passed-number'),
-            light = document.getElementById('light'),
-            time = document.getElementById('jest-time');
+            browser = byId('user-info'),
+            passedNumber = byId('passed-number'),
+            light = byId('light'),
+            time = byId('jest-time');
         
         browser.innerHTML = getBrowser();
         passedNumber.innerHTML += ' ' + (stat.total - stat.failed) + ' of ' + stat.total + ' tests passed &rarr;';
@@ -229,6 +229,18 @@ function addEvent (obj, type, callback) {
         obj.addEventListener(type, callback);
     else if (obj.attachEvent)
         obj.attachEvent('on' + type, callback);
+}
+
+function create (elem) {
+    return document.createElement(elem);
+}
+
+function byId (id) {
+    var elem = document.getElementById(elem);
+    if (elem) 
+        return elem;
+    else 
+        return false;
 }
 
 function getBrowser () {
