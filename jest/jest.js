@@ -2,45 +2,73 @@
 // 2011 (c) Ben Brooks Scholz. MIT Licensed.
 
 (function (window) {
-    
-window.queue = {};
 
-var Test = function (name, expected, callback) {
+var Test = function (module, name, expected, callback) {
+    this.module = module;
     this.name = name;
     this.expected = expected;
     this.actual = 0;
-    this.callback = callback; 
-    this.tests = []; 
+    this.failed = 0;
+    this.callback = callback;
+    this.results = [];
 };
 
 Test.prototype = {
     setup : function () {
+        var jestTests = document.getElementById('jest-tests');
+        var module = document.getElementById(this.module.split(' ').join('-'));
         
+        if (!module) {
+            module = document.createElement('ol');
+            module.id = this.module.split(' ').join('-');
+        }
+        
+        var testList = document.createElement('ol');
+        testList.id = this.name.split(' ').join('-');
+        
+        var testsHeader = document.createElement('h2');
+        testsHeader.id = this.name.split(' ').join('-') + '-header';
+        
+        testList.appendChild(testsHeader);
+        module.appendChild(testList);
+        jestTests.appendChild(module);
+    },
+    
+    run : function () {
+        var self = this;
+        expose(Jest.data, {
+            currentTest : self
+        });
+        this.callback();
     },
     
     finish : function () {
+        var module = document.getElementById(this.module.split(' ').join('-')),
+            testList = document.getElementById(this.name.split(' ').join('-')),
+            test,
+            moduleHeader,
+            header;
+
+        header = document.getElementById(this.name.split(' ').join('-') + '-header');
+        header.innerHTML = this.name + ' -- ' + (this.actual - this.failed) + ' of ' + this.actual + ' passed';
         
-    },
-    
-    queue : function () {
-        var q = window.queue,
-            module = window.module;
-            
-        if (Jest.isArray(window.queue[module]))
-            window.queue[module].push(this.callback);
-        else
-            window.queue[module] = [];
+        for (var i = 0; i < this.results.length; i += 1) {
+            test = document.createElement('li');
+            test.innerHTML = this.results[i];
+            testList.appendChild(test);
+        }
     }
 };
 
 var Jest = {
     jest : function (moduleName) {
-        window.module = moduleName;
+        Jest.data.currentModule = moduleName;
+        
     },
 
     test : function (testsName, expectedTests, tests) {
-        var test = new Test(testsName, expectedTests, tests);
-        test.queue();
+        var test = new Test(Jest.data.currentModule, testsName, expectedTests, tests);
+        Jest.data.tests.push(test);
     },
     
     yes : function (given, message) {
@@ -76,13 +104,58 @@ var Jest = {
 
 expose(window, Jest);
 
-expose(Jest, { 
+var data = {
+    tests : [],
+    jestStats : { total : 0, failed : 0, time : 0 }
+}
+
+expose(Jest, {
+    data : data,
+    
     load : function () {
-        Jest.run();
+        var i,
+            test,
+            start, 
+            done;
+        start = new Date();
+        
+        for (i = 0; i < Jest.data.tests.length; i += 1) {
+            test = Jest.data.tests[i];
+            test.setup.call(test);
+            test.run.call(test);
+            test.finish.call(test);
+        }
+        done = new Date();
+        Jest.data.jestStats.time = done.getTime() - start.getTime();
+        Jest.finish();
     },
     
     process : function (result, message) {
-        console.log(result.toString() + ' ' + message);    
+        var resultStr = 'passed',
+            resultData;
+        if (!result) {
+            resultStr = 'failed';
+            Jest.data.jestStats.failed += 1;
+            Jest.data.currentTest.failed += 1;
+        }
+        resultData = resultStr + ' -- ' + message;
+        Jest.data.jestStats.total += 1;
+        Jest.data.currentTest.actual += 1;
+        Jest.data.currentTest.results.push(resultData);
+    },
+    
+    finish : function () {
+        var stat = Jest.data.jestStats;
+        var browser = document.getElementById('user-info');
+        browser.innerHTML = getBrowser();
+        var passedNumber = document.getElementById('passed-number');
+        passedNumber.innerHTML += ' ' + (stat.total - stat.failed) + ' of ' + stat.total + ' tests passed &rarr;';
+        if (stat.failed) {
+            var light = document.getElementById('light');
+            light.style.background = '#FF6464';
+        }
+        var time = document.getElementById('jest-time');
+        time.innerHTML = stat.time + ' milliseconds';
     },
     
     isEqual : function (a, b) {
@@ -124,35 +197,31 @@ expose(Jest, {
     },
     
     isArray :  function (a) {
-        if (a && typeof a === 'object' && a.constructor === Array)
+        if (a == 'undefined')
+            return false;
+        else if (a && typeof a === 'object' && a.constructor === Array)
             return true;
         else if (Object.prototype.toString.call(a) == '[object Array]')
             return true;
         else
             return false;
-    },
-    
-    run : function () {
-        for (var module in window.queue) {
-            while (window.queue[module].length)
-                window.queue[module].shift()();
-        }
     }
-});
+})
 
 addEvent(window, 'load', Jest.load);
 
-function expose (exposee, exposer) {
-    for (var property in exposer)
-        exposee[property] = exposer[property];
-    return exposee;
+function expose (exposed, exposer) {
+    for (var property in exposer) {
+        if (exposer.hasOwnProperty(property))
+            exposed[property] = exposer[property]; 
+    }
 }
 
-function addEvent (element, type, callback) {
-    if (element.addEventListener)
-        element.addEventListener(type, callback, false);
-    else if (element.attachEvent)
-        element.attachEvent('on' + type, callback);
+function addEvent (obj, type, callback) {
+    if (obj.addEventListener)
+        obj.addEventListener(type, callback);
+    else if (obj.attachEvent)
+        obj.attachEvent('on' + type, callback);
 }
 
 function getBrowser () {
@@ -180,6 +249,7 @@ function getBrowser () {
     } 
     return browser + ' ' + version;
 }
+
 
 }(this));
 
