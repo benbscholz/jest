@@ -149,12 +149,6 @@ button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: ba
 button, input { line-height: normal; *overflow: visible; }
 
 /*
-* Reintroduce inner spacing in 'table' to avoid overlap and whitespace issues in IE6/7
-*/
-
-table button, table input { *overflow: auto; }
-
-/*
 * 1. Display hand cursor for clickable form elements
 * 2. Allow styling of clickable form elements in iOS
 */
@@ -175,48 +169,26 @@ input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
 
 button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
 
-/*
-* 1. Remove default vertical scrollbar in IE6/7/8/9
-* 2. Allow only vertical resizing
-*/
-
-textarea { overflow: auto; vertical-align: top; resize: vertical; }
-
-/* Colors for form validity */
-input:valid, textarea:valid { }
-input:invalid, textarea:invalid { background-color: #f0dddd; }
-
 /* Jest styles */
 
 body                { width: 760px;
-                      margin: 0 auto 0 auto; }
-                  
- #stat-summary      { width: 225px; 
-                      height: 150px;
-                      background-color: #909090;
-                      color: #fff;
-                      text-shadow: 0 -1px 0 #555;
-                      -webkit-border-radius: 2px; 
-                      -moz-border-radius: 2px; 
-                      border-radius: 2px; 
-                      -moz-background-clip: padding; 
-                      -webkit-background-clip: padding-box; 
-                      background-clip: padding-box; 
-                      -webkit-box-shadow: 0px 1px 1px #222; 
-                      -moz-box-shadow: 0px 1px 1px #222; 
-                      box-shadow: 0px 1px 1px #222; }
-     
-#jest-header        { margin: 5px 0 0 0;
-                      padding-top: 10px;
-                      text-align: center; }
+                      margin: 0 auto 0 auto;
+                      border: 1px solid #555; }
 
-#user-info,
-#passed-number,
-#test-time          { text-align: center;
-                      width: 225px;
-                      float: top; }
-                      
-.result             { margin-left: 25px; }
+#summary            { display: inline-block;
+                      width: 350px; 
+                      margin-left: 10px; }
+
+#summary p          { margin-left: 20px; }
+
+#light              { display: inline-block;
+                      height: 10px;
+                      width: 10px;
+                      background-color: rgba(100, 255, 100, 1); }
+
+h2                  { margin-left: 0; }
+
+ol li               { margin-left: 20px; }
 
 
 
