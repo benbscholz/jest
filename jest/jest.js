@@ -15,18 +15,21 @@ var Test = function (module, name, expected, callback) {
 
 Test.prototype = {
     setup : function () {
-        var jestTests = document.getElementById('jest-tests');
-        var module = document.getElementById(this.module.split(' ').join('-'));
+        var jestTests = document.getElementById('jest-tests'),
+            module = document.getElementById(this.module.split(' ').join('-')),
+            testList = document.createElement('ol'),
+            testsHeader = document.createElement('h3'),
+            moduleHeader;
         
         if (!module) {
             module = document.createElement('ol');
             module.id = this.module.split(' ').join('-');
+            moduleHeader = document.createElement('h2');
+            moduleHeader.innerHTML = this.module;
+            module.appendChild(moduleHeader);
         }
         
-        var testList = document.createElement('ol');
         testList.id = this.name.split(' ').join('-');
-        
-        var testsHeader = document.createElement('h2');
         testsHeader.id = this.name.split(' ').join('-') + '-header';
         
         testList.appendChild(testsHeader);
@@ -47,12 +50,13 @@ Test.prototype = {
             testList = document.getElementById(this.name.split(' ').join('-')),
             test,
             moduleHeader,
-            header;
+            header,
+            i;
 
         header = document.getElementById(this.name.split(' ').join('-') + '-header');
         header.innerHTML = this.name + ' -- ' + (this.actual - this.failed) + ' of ' + this.actual + ' passed';
         
-        for (var i = 0; i < this.results.length; i += 1) {
+        for (i = 0; i < this.results.length; i += 1) {
             test = document.createElement('li');
             test.innerHTML = this.results[i];
             testList.appendChild(test);
@@ -125,6 +129,7 @@ expose(Jest, {
             test.run.call(test);
             test.finish.call(test);
         }
+        
         done = new Date();
         Jest.data.jestStats.time = done.getTime() - start.getTime();
         Jest.finish();
@@ -146,15 +151,17 @@ expose(Jest, {
     
     finish : function () {
         var stat = Jest.data.jestStats;
-        var browser = document.getElementById('user-info');
+            browser = document.getElementById('user-info'),
+            passedNumber = document.getElementById('passed-number'),
+            light = document.getElementById('light'),
+            time = document.getElementById('jest-time');
+        
         browser.innerHTML = getBrowser();
-        var passedNumber = document.getElementById('passed-number');
         passedNumber.innerHTML += ' ' + (stat.total - stat.failed) + ' of ' + stat.total + ' tests passed &rarr;';
-        if (stat.failed) {
-            var light = document.getElementById('light');
+    
+        if (stat.failed) 
             light.style.background = '#FF6464';
-        }
-        var time = document.getElementById('jest-time');
+
         time.innerHTML = stat.time + ' milliseconds';
     },
     
