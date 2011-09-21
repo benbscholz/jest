@@ -18,13 +18,13 @@ Test.prototype = {
         var jestTests = byId('jest-tests'),
             module = byId(this.module.split(' ').join('-')),
             testList = create('ol'),
-            testsHeader = document.create('h3'),
+            testsHeader = create('h3'),
             moduleHeader;
         
         if (!module) {
-            module = document.create('ol');
+            module = create('ol');
             module.id = this.module.split(' ').join('-');
-            moduleHeader = document.create('h2');
+            moduleHeader = create('h2');
             moduleHeader.innerHTML = this.module;
             module.appendChild(moduleHeader);
         }
@@ -56,9 +56,9 @@ Test.prototype = {
         header = byId(this.name.split(' ').join('-') + '-header');
         header.innerHTML = this.name + ' -- ' + (this.actual - this.failed) + ' of ' + this.actual + ' passed';
         
-        for (i = 0; i < this.results.length; i += 1) {
-            test = document.create('li');
-            test.innerHTML = this.results[i];
+        while (this.results.length) {
+            test = create('li');
+            test.innerHTML = this.results.shift();
             testList.appendChild(test);
         }
     }
@@ -67,7 +67,6 @@ Test.prototype = {
 var Jest = {
     jest : function (moduleName) {
         Jest.data.currentModule = moduleName;
-        
     },
 
     test : function (testsName, expectedTests, tests) {
@@ -123,8 +122,8 @@ expose(Jest, {
             done;
         start = new Date();
         
-        for (i = 0; i < Jest.data.tests.length; i += 1) {
-            test = Jest.data.tests[i];
+        while (Jest.data.tests.length) {
+            test = Jest.data.tests.shift();
             test.setup.call(test);
             test.run.call(test);
             test.finish.call(test);
@@ -236,7 +235,7 @@ function create (elem) {
 }
 
 function byId (id) {
-    var elem = document.getElementById(elem);
+    var elem = document.getElementById(id);
     if (elem) 
         return elem;
     else 
