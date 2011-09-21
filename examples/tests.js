@@ -1,4 +1,4 @@
-jest('jest tests');
+jest('tests');
 
 test('yes examples', 4, function () {
     yes( true, 'yes: true is true' );
@@ -6,6 +6,7 @@ test('yes examples', 4, function () {
     yes( !!true, 'yes: not not true is true' );
     yes( 1, 'yes: truthy is true' );
 });
+
 
 test('no examples', 4, function () {    
     no( false, 'no: false is false' );
@@ -42,4 +43,3 @@ test('different examples', 4, function () {
     different( [1], [0], 'different: array is not array' );
     different( { 1 : 0 }, { 1 : 1}, 'different: objects are different' )
 });
-
