@@ -40,5 +40,5 @@ test('different examples', 4, function () {
     different( 1, 2, 'different: one is not two' );
     different( 'jest', 'jester', 'different: string is not string' );
     different( [1], [0], 'different: array is not array' );
-    different( { 1 : 0 }, { 1 : 1}, 'different: objects are different' );
+    different( { 1 : 0 }, { 1 : 1 }, 'different: objects are different' );
 });
