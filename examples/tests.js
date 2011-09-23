@@ -1,4 +1,4 @@
-jest('tests');
+jest('boolean tests');
 
 test('yes examples', 4, function () {
     yes( true, 'yes: true is true' );
@@ -6,7 +6,6 @@ test('yes examples', 4, function () {
     yes( !!true, 'yes: not not true is true' );
     yes( 1, 'yes: truthy is true' );
 });
-
 
 test('no examples', 4, function () {    
     no( false, 'no: false is false' );
@@ -16,11 +15,11 @@ test('no examples', 4, function () {
 });
 
 test('alike examples', 4, function () {
+    var a;
     alike( 1, 1, 'alike: one is one' );
     alike( true, true, 'alike: true is true' );
     alike( 'jest', 'jest', 'alike: string is string' );
-    var a = [1];
-    alike( a, a, 'alike: array is array' );
+    alike( a = [1], a, 'alike: array is array' );
 });
 
 test('unlike examples', 4, function () {
@@ -41,5 +40,5 @@ test('different examples', 4, function () {
     different( 1, 2, 'different: one is not two' );
     different( 'jest', 'jester', 'different: string is not string' );
     different( [1], [0], 'different: array is not array' );
-    different( { 1 : 0 }, { 1 : 1}, 'different: objects are different' )
+    different( { 1 : 0 }, { 1 : 1}, 'different: objects are different' );
 });
