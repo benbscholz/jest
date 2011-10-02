@@ -80,9 +80,10 @@ Test.prototype = {
             test,
             header;
         
-        if (header) {
+        if (module) {
             header = id(this.name.split(' ').join('-') + '-header');
-            header.innerHTML = this.name + ' -- ' + (this.actual - this.failed) + ' of ' + this.actual + ' passed';
+            header.innerHTML = this.name + ' -- ' + (this.actual - this.failed) + 
+                               ' of ' + this.actual + ' passed';
             
             while (this.results.length) {
                 test = create('li');
@@ -192,7 +193,7 @@ expose(Jest, {
     },
     
     load : function () {
-        if(!Jest.init()) {
+        if (Jest.init()) {
             var module,
                 done,
                 start = new Date();
@@ -233,6 +234,7 @@ expose(Jest, {
             light = id('light'),
             time = id('jest-time'),
             ui = userInfo();
+            
         if (browser) {    
             browser.innerHTML = ui.browser + ' ' + ui.version + ' -- ' + ui.os;
             passedNumber.innerHTML += ' ' + (stat.total - stat.failed) + 
