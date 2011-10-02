@@ -49,6 +49,7 @@ var Test = function (module, name, expected, callback) {
     this.expected = expected;
     this.actual = 0;
     this.failed = 0;
+    this.time;
     this.callback = callback;
     this.results = [];
 };
@@ -71,7 +72,13 @@ Test.prototype = {
     },
     
     run : function () {
-        this.callback();
+        this.time = getTime(this.callback);
+        
+        if (this.time === 0) {
+            this.time = '< 1';
+        } else if (this.time === 1) {
+            this.time = '~ 1';
+        }
     },
     
     finish : function () {
@@ -82,8 +89,13 @@ Test.prototype = {
         
         if (module) {
             header = id(this.name.split(' ').join('-') + '-header');
-            header.innerHTML = this.name + ' -- ' + (this.actual - this.failed) + 
-                               ' of ' + this.actual + ' passed';
+            header.innerHTML = this.name + ' ( ' + this.actual + ' tests in ' + 
+                               this.time;
+            if (typeof this.time !== 'number') {
+                header.innerHTML += ' millisecond. )';
+            } else {
+                header.innerHTML += ' milliseconds. )';
+            }
             
             while (this.results.length) {
                 test = create('li');
@@ -164,7 +176,7 @@ expose(Jest, {
         
         if (!jestTests) {
             error.id = 'error';
-            error.innerHTML = '<span id=\"warning\"> !! </span>Jest requires a div tag with an id of \'jest-tests\'.';
+            error.innerHTML = '<span class=\"warning\"> !! </span>Jest requires a div tag with an id of \'jest-tests\'.';
             body.insertBefore(error, body.firstChild);
             body.style.border = 'none';
             body.style.width = '100%';
@@ -178,6 +190,8 @@ expose(Jest, {
         passedNumber.id = 'passed-number';
         light.id = 'light';
         jestTime.id = 'jest-time';
+        
+        light.className = "running";
         
         jestHeader.innerHTML = 'Jest Unit Tests';
         
@@ -194,19 +208,17 @@ expose(Jest, {
     
     load : function () {
         if (Jest.init()) {
-            var module,
-                done,
-                start = new Date();
+            var module;
                 
-            while (Jest.modules.length) {
-                module = Jest.modules.shift();
-                module.setup.call(module);
-                module.run.call(module);
-                module.finish.call(module);
-            }
+            Jest.jestStats.time = getTime(function () {
+                while (Jest.modules.length) {
+                    module = Jest.modules.shift();
+                    module.setup.call(module);
+                    module.run.call(module);
+                    module.finish.call(module);
+                }
+            });
             
-            done = new Date();
-            Jest.jestStats.time = done.getTime() - start.getTime();
             Jest.finish();
         }
     },
@@ -231,21 +243,22 @@ expose(Jest, {
         var stat = Jest.jestStats,
             browser = id('user-info'),
             passedNumber = id('passed-number'),
-            light = id('light'),
             time = id('jest-time'),
             ui = userInfo();
-            
-        if (browser) {    
-            browser.innerHTML = ui.browser + ' ' + ui.version + ' -- ' + ui.os;
-            passedNumber.innerHTML += ' ' + (stat.total - stat.failed) + 
-                                      ' of ' + stat.total + ' tests passed &rarr; ';
+              
+        browser.innerHTML = '<p>' + ui.browser + ' ' + ui.version + '</p>' + 
+                            '<p>' + ui.os + '</p>';
         
-            if (stat.failed) {
-                light.style.background = '#FF6464';
-            }
-    
-            time.innerHTML = stat.time + ' milliseconds';
+        passedNumber.innerHTML += ' ' + (stat.total - stat.failed) + 
+                                  ' of ' + stat.total + ' tests passed in ';
+
+        if (stat.failed !== 0) {
+            id('light').className = "failed";
+        } else {
+            id('light').className = "passed";
         }
+
+        time.innerHTML = stat.time + ' milliseconds' + '.';
     },
     
     isEqual : function (a, b) {
@@ -324,6 +337,16 @@ function addEvent (obj, type, callback) {
     }
 }
 
+function getTime (callback) {
+    var start = new Date(),
+        done;
+        
+    callback();
+    done = new Date();
+    
+    return done.getTime() - start.getTime();
+}
+
 function create (elem) {
     return document.createElement(elem);
 }
@@ -332,7 +355,7 @@ function id (str) {
     return document.getElementById(str);
 }
 
-// detect.js
+// from detect.js
 // (c) 2011 Ben Brooks Scholz. MIT Licensed.
 // http://github.com/benbscholz/detect
 function userInfo () {
