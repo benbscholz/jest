@@ -75,9 +75,9 @@ Test.prototype = {
         this.time = getTime(this.callback);
         
         if (this.time === 0) {
-            this.time = '< 1';
+            this.time = '<1';
         } else if (this.time === 1) {
-            this.time = '~ 1';
+            this.time = '~1';
         }
     },
     
@@ -89,7 +89,13 @@ Test.prototype = {
         
         if (module) {
             header = id(this.name.split(' ').join('-') + '-header');
-            header.innerHTML = this.name + ' ( ' + this.actual + ' tests in ' + 
+            console.log(this.failed);
+            if (this.failed === 0) {
+                header.innerHTML = '&#10004;';
+            } else {
+                header.innerHTML = '&#10008;';
+            }
+            header.innerHTML += this.name + ' ( ' + this.actual + ' tests in ' + 
                                this.time;
             if (typeof this.time !== 'number') {
                 header.innerHTML += ' millisecond. )';
@@ -233,7 +239,7 @@ expose(Jest, {
             Jest.currentModule.currentTest.failed += 1;
         }
         
-        resultData = resultStr + ' -- ' + message;
+        resultData = message + ' &rarr; ' + resultStr;
         Jest.jestStats.total += 1;
         Jest.currentModule.currentTest.actual += 1;
         Jest.currentModule.currentTest.results.push(resultData);
