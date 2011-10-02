@@ -16,7 +16,7 @@ Module.prototype = {
             module = id(this.name.split(' ').join('-')),
             moduleHeader;
         
-        if (!module) {
+        if (!module && jestTests) {
             module = create('ol');
             module.id = this.name.split(' ').join('-');
             moduleHeader = create('h2');
@@ -60,12 +60,14 @@ Test.prototype = {
             testList = create('ol'),
             testsHeader = create('h3');
         
-        testList.id = this.name.split(' ').join('-');
-        testsHeader.id = this.name.split(' ').join('-') + '-header';
-        
-        testList.appendChild(testsHeader);
-        module.appendChild(testList);
-        jestTests.appendChild(module);
+        if (jestTests) {
+            testList.id = this.name.split(' ').join('-');
+            testsHeader.id = this.name.split(' ').join('-') + '-header';
+            
+            testList.appendChild(testsHeader);
+            module.appendChild(testList);
+            jestTests.appendChild(module);
+        }
     },
     
     run : function () {
@@ -77,18 +79,21 @@ Test.prototype = {
             testList = id(this.name.split(' ').join('-')),
             test,
             header;
-
-        header = id(this.name.split(' ').join('-') + '-header');
-        header.innerHTML = this.name + ' -- ' + (this.actual - this.failed) + ' of ' + this.actual + ' passed';
         
-        while (this.results.length) {
-            test = create('li');
-            test.innerHTML = this.results.shift();
-            testList.appendChild(test);
+        if (header) {
+            header = id(this.name.split(' ').join('-') + '-header');
+            header.innerHTML = this.name + ' -- ' + (this.actual - this.failed) + ' of ' + this.actual + ' passed';
+            
+            while (this.results.length) {
+                test = create('li');
+                test.innerHTML = this.results.shift();
+                testList.appendChild(test);
+            }
         }
     }
 };
 
+// functions available to the user
 var Jest = {
     jest : function (moduleName) {
         var module = new Module(moduleName);
@@ -152,8 +157,18 @@ expose(Jest, {
             passedNumber = create('span'),
             light = create('span'),
             jestTime = create('span'),
+            error = create('div'),
             jestTests = id('jest-tests'),
             body = document.body;   
+        
+        if (!jestTests) {
+            error.id = 'error';
+            error.innerHTML = '<span id=\"warning\"> !! </span>Jest requires a div tag with an id of \'jest-tests\'.';
+            body.insertBefore(error, body.firstChild);
+            body.style.border = 'none';
+            body.style.width = '100%';
+            return false;
+        }
         
         summary.id = 'summary';
         jestHeader.id = 'jest-header';
@@ -172,25 +187,27 @@ expose(Jest, {
         testStats.appendChild(jestTime);
         summary.appendChild(testStats);
         body.insertBefore(summary, jestTests);
+        
+        return true;
     },
     
     load : function () {
-        Jest.init();
-        
-        var module,
-            done,
-            start = new Date();
+        if(!Jest.init()) {
+            var module,
+                done,
+                start = new Date();
+                
+            while (Jest.modules.length) {
+                module = Jest.modules.shift();
+                module.setup.call(module);
+                module.run.call(module);
+                module.finish.call(module);
+            }
             
-        while (Jest.modules.length) {
-            module = Jest.modules.shift();
-            module.setup.call(module);
-            module.run.call(module);
-            module.finish.call(module);
+            done = new Date();
+            Jest.jestStats.time = done.getTime() - start.getTime();
+            Jest.finish();
         }
-        
-        done = new Date();
-        Jest.jestStats.time = done.getTime() - start.getTime();
-        Jest.finish();
     },
     
     process : function (result, message) {
@@ -216,16 +233,17 @@ expose(Jest, {
             light = id('light'),
             time = id('jest-time'),
             ui = userInfo();
+        if (browser) {    
+            browser.innerHTML = ui.browser + ' ' + ui.version + ' -- ' + ui.os;
+            passedNumber.innerHTML += ' ' + (stat.total - stat.failed) + 
+                                      ' of ' + stat.total + ' tests passed &rarr; ';
         
-        browser.innerHTML = ui.browser + ' ' + ui.version + ' -- ' + ui.os;
-        passedNumber.innerHTML += ' ' + (stat.total - stat.failed) + 
-                                  ' of ' + stat.total + ' tests passed &rarr; ';
+            if (stat.failed) {
+                light.style.background = '#FF6464';
+            }
     
-        if (stat.failed) {
-            light.style.background = '#FF6464';
+            time.innerHTML = stat.time + ' milliseconds';
         }
-
-        time.innerHTML = stat.time + ' milliseconds';
     },
     
     isEqual : function (a, b) {
