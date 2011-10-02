@@ -1,5 +1,8 @@
-#Jest 
+Jest
+==========================================
 ##A unit-testing framework for javascript.
+
+
 
 Usage:
 
@@ -47,3 +50,8 @@ Usage:
         different( [1], [0], 'different: array is not array' );
         different( { 1 : 0 }, { 1 : 1}, 'different: objects are different' )
     });
+    
+    test('range examples', function () {
+        range( 1, [0,10], 'range: one is between 0 and 10' );
+        range( 2, [-1,3], 'range: 2 is between -1 and 3');
+    }, 2);
