@@ -186,7 +186,8 @@ expose(Jest, {
             ui = userInfo();
         
         browser.innerHTML = ui.browser + ' ' + ui.version + ' -- ' + ui.os;
-        passedNumber.innerHTML += ' ' + (stat.total - stat.failed) + ' of ' + stat.total + ' tests passed &rarr;';
+        passedNumber.innerHTML += ' ' + (stat.total - stat.failed) + 
+                                  ' of ' + stat.total + ' tests passed &rarr;';
     
         if (stat.failed) {
             light.style.background = '#FF6464';
@@ -240,7 +241,7 @@ expose(Jest, {
         return true;
     },
     
-    isArray :  function (a) {
+    isArray : function (a) {
         if (a === 'undefined') {
             return false;
         } else if (a && typeof a === 'object' && a.constructor === Array) {
@@ -279,19 +280,9 @@ function id (str) {
     return document.getElementById(str);
 }
 
-// collects browser, version, & os
-// supports:
-//        Internet Explorer 6, 7, 8, 9
-//        Firefox 3.6, 4, 5, 6, 7
-//        Safari 3, 4, 5
-//        Opera 9, 10, 11, Mini, Mobile 
-//        Chrome
-//
-//        Mac OS X
-//        Windows
-//        Linux
-//        Android
-//        iOS
+// detect.js
+// (c) 2011 Ben Brooks Scholz. MIT Licensed.
+// http://github.com/benbscholz/detect
 function userInfo () {
     var browser,
         os,
