@@ -144,7 +144,39 @@ expose(Jest, {
     
     modules : [], 
     
+    init : function () {
+        var summary = create('div'),
+            jestHeader = create('h1'),
+            userInfo = create('p'),
+            testStats = create('p'),
+            passedNumber = create('span'),
+            light = create('span'),
+            jestTime = create('span'),
+            jestTests = id('jest-tests'),
+            body = document.body;   
+        
+        summary.id = 'summary';
+        jestHeader.id = 'jest-header';
+        userInfo.id = 'user-info';
+        testStats.id = 'test-stats';
+        passedNumber.id = 'passed-number';
+        light.id = 'light';
+        jestTime.id = 'jest-time';
+        
+        jestHeader.innerHTML = 'Jest Unit Tests';
+        
+        summary.appendChild(jestHeader);
+        summary.appendChild(userInfo);
+        passedNumber.appendChild(light);
+        testStats.appendChild(passedNumber);
+        testStats.appendChild(jestTime);
+        summary.appendChild(testStats);
+        body.insertBefore(summary, jestTests);
+    },
+    
     load : function () {
+        Jest.init();
+        
         var module,
             done,
             start = new Date();
@@ -187,7 +219,7 @@ expose(Jest, {
         
         browser.innerHTML = ui.browser + ' ' + ui.version + ' -- ' + ui.os;
         passedNumber.innerHTML += ' ' + (stat.total - stat.failed) + 
-                                  ' of ' + stat.total + ' tests passed &rarr;';
+                                  ' of ' + stat.total + ' tests passed &rarr; ';
     
         if (stat.failed) {
             light.style.background = '#FF6464';
