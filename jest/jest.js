@@ -85,18 +85,21 @@ Test.prototype = {
         var module = id(this.module.split(' ').join('-')),
             testList = id(this.name.split(' ').join('-')),
             test,
-            header;
+            header,
+            warning;
         
         if (module) {
             header = id(this.name.split(' ').join('-') + '-header');
-            console.log(this.failed);
-            if (this.failed === 0) {
-                header.innerHTML = '&#10004;';
+
+            if ((this.failed === 0) && (this.expected === this.actual)) {
+                header.innerHTML = '&#10004; ';
             } else {
-                header.innerHTML = '&#10008;';
+                header.innerHTML = '&#10008; ';
             }
+            
             header.innerHTML += this.name + ' ( ' + this.actual + ' tests in ' + 
                                this.time;
+                               
             if (typeof this.time !== 'number') {
                 header.innerHTML += ' millisecond. )';
             } else {
@@ -107,6 +110,14 @@ Test.prototype = {
                 test = create('li');
                 test.innerHTML = this.results.shift();
                 testList.appendChild(test);
+            }
+            
+            if (this.expected !== this.actual) {
+                warning = create('h1');
+                warning.className = 'warning';
+                warning.innerHTML = 'Warning: ' + this.actual + 
+                                    ' tests were executed, but ' + this.expected + ' were expected.';
+                testList.insertBefore(warning, testList.firstChild.nextSibling);
             }
         }
     }
@@ -182,10 +193,11 @@ expose(Jest, {
         
         if (!jestTests) {
             error.id = 'error';
-            error.innerHTML = '<span class=\"warning\"> !! </span>Jest requires a div tag with an id of \'jest-tests\'.';
+            error.innerHTML = '<span class=\"error\"> !! </span>Jest requires a div tag with an id of \'jest-tests\'.';
             body.insertBefore(error, body.firstChild);
             body.style.border = 'none';
             body.style.width = '100%';
+            body.style.margin = '0';
             return false;
         }
         
@@ -208,6 +220,7 @@ expose(Jest, {
         testStats.appendChild(jestTime);
         summary.appendChild(testStats);
         body.insertBefore(summary, jestTests);
+        body.insertBefore(create('hr'), jestTests);
         
         return true;
     },
@@ -239,7 +252,7 @@ expose(Jest, {
             Jest.currentModule.currentTest.failed += 1;
         }
         
-        resultData = message + ' &rarr; ' + resultStr;
+        resultData = '<div class=\"' + resultStr + ' test\">' + resultStr + '</div> ' + message;
         Jest.jestStats.total += 1;
         Jest.currentModule.currentTest.actual += 1;
         Jest.currentModule.currentTest.results.push(resultData);
