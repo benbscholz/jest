@@ -33,4 +33,4 @@ A test-group is declared with a name, a callback containing the tests, and the e
 		no(!true, 'not true is false');
 	}, 2);
 
-For a complete set of examples, see `examples/tests.js` or open `html/jest.html` in your browser.
+For a complete demonstration of Jest's functions, see `examples/tests.js` or open `html/jest.html` in your browser.
