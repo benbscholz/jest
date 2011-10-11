@@ -1,59 +1,37 @@
-Jest
-==========================================
-##A unit-testing framework for javascript.
+#Jest: a unit-testing framework for javascript in the browser.
 
+Jest.js simplifies javascript testing.
 
+##Getting Started
 
-Usage:
+Add Jest to an HTML file:
 
-    jest('boolean tests');
-    
-    test('yes examples', function () {
-        yes( true, 'yes: true is true' );
-        yes( !false, 'yes: not false is true' );
-        yes( !!true, 'yes: not not true is true' );
-        yes( 1, 'yes: truthy is true' );
-    }, 4);
-    
-    test('no examples', function () {    
-        no( false, 'no: false is false' );
-        no( !true, 'no: not true is false' );
-        no( !!false, 'no: not not false is false' ); 
-        no( 0, 'no: falsy is false' ); 
-    }, 4);
-    
-    test('alike examples', function () {
-        var a;
-        alike( 1, 1, 'alike: one is one' );
-        alike( true, true, 'alike: true is true' );
-        alike( 'jest', 'jest', 'alike: string is string' );
-        alike( a = [1], a, 'alike: array is array' );
-    }, 4);
-    
-    test('unlike examples', function () {
-        var a;
-        unlike( 1, 2, 'unlike: one is not two' );
-        unlike( true, false, 'unlike: true is not false' );
-        unlike( 'jest', 'jester', 'unlike: string is not string' );
-        unlike( a = [1], [1], 'unlike: array is not array' );
-    }, 4);
-    
-    test('same examples', function () {
-        same( 1, 1, 'same: one is one' );
-        same( 'jest', 'jest', 'same: string is string' );
-        same( [1], [1], 'same: array is array' );
-        same( { 1 : 1 }, { 1 : 1 }, 'same: object is object' );
-    }, 4);
-    
-    test('different examples', function () {
-        different( 1, 2, 'different: one is not two' );
-        different( 'jest', 'jester', 'different: string is not string' );
-        different( [1], [0], 'different: array is not array' );
-        different( { 1 : 0 }, { 1 : 1 }, 'different: objects are different' );
-    }, 4);
-    
-    test('range examples', function () {
-        range( 1, [0,10], 'range: one is between 0 and 10' );
-        range( 2, [-1,3], 'range: 2 is between -1 and 3');
-    }, 2);
-        
+	<link href="jest.css" rel="stylesheet" type="text/css">
+	<script src="jest.js"></script>
+	
+Add your tests:
+
+	<script src="tests.js"></script>
+	
+Indicate where on the page the tests should appear:
+
+	<div id="jest"></div>
+	
+##Create tests
+
+Jest organizes individual tests into **test-groups** and test-groups into **modules**.
+Each test file should begin with the declaration of the module name:
+
+	jest('boolean module');
+	
+Each test-group following this declaration will be considered a member of `module` 'boolean module' (that is, unless another module is declared with `jest('another module');`).
+
+A test-group is declared with a name, a callback containing the tests, and the expected number of tests:
+
+	test('true tests', function () {
+		yes(true, 'true is true');
+		no(!true, 'not true is false');
+	}, 2);
+	
+For a complete list of the available test functions (like `yes` & `no`), see the API documentation below.
+
