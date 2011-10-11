@@ -1,191 +1,97 @@
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
 /* Jest styles */
 
 /* base style */
-body                { width: 700px;
-                      margin: 10px auto 10px auto;
+#jest               { width: 700px;
+                      margin: auto;
                       border: 1px solid #555;
-                      font-family: "Helvetica Neue Light", 
-                                   "HelveticaNeue-Light", 
-                                   "Helvetica Neue", 
-                                   Calibri, 
-                                   Helvetica, 
-                                   Arial, 
-                                   sans-serif;
-                      -webkit-border-radius: 2px; 
-                      -moz-border-radius: 2px; 
-                      border-radius: 2px;    
-                      -moz-background-clip: padding; 
-                      -webkit-background-clip: padding-box; 
-                      background-clip: padding-box;
-                      z-index: 1; }
-
-ol ol               { margin-left: 30px; }
-
-ol h3,
-ol h2               { margin-bottom: 10px; }
-
-ol li               { margin-left: 60px;
-                      margin-bottom: 5px;
-                      position: relative;
-                      top: 10%; }
-
-/* formatting */
-#summary,
-#jest-tests         { margin-top: 10px;
-                      margin-left: 10px; }
-
-#summary h1         { font-size: 36px;
-                      font-weight: bold;
+                      background-color: rgba(225,225,225,1	);
                       font-family: Helvetica, Arial, sans-serif; }
                       
-#user-info          { width: 120px;
-                      height: 45px;
-                      margin-left: 350px;
-                      margin-top: -46px;
-                      background-color: rgba(200,200,200, 1);
-                      border: 2px 2px 1px rgba(50, 50, 50, .7);
-                      text-align: center;
-                      -webkit-box-shadow: 1px 1px 0px #222, 2px 2px 0px #222, 2px 0px 0px #222;
-                      -moz-box-shadow: 1px 1px 0px #222, 2px 2px 0px #222, 2px 0px 0px #222;
-                      box-shadow: 1px 1px 0px #222, 2px 2px 0px #222, 2px 0px 0px #222;
-                      -webkit-border-radius: 1px; 
-                      -moz-border-radius: 1px; 
-                      border-radius: 1px;    
-                      -moz-background-clip: padding; 
-                      -webkit-background-clip: padding-box; 
-                      background-clip: padding-box; }
-                    
-#user-info p        { position: relative;
-                      top: 20%;
-                      font-size: 12px;
-                      line-height: 1.2em;
-                      color: #111;
-                      text-shadow: 0 -1px 0 rgba(255, 255, 255, .25); }
-                      
-ol h2               { font-size: 22px; }
-                      
+#jest li            { list-style-position: inside; }
 
-/* error styles */                      
-#error              { width: 750px;
-                      margin: -1px auto 0 auto;
-                      position: relative;
-                      color: #fff;
-                      font: 16px Arial, Helvetica, sans-serif;
+/* header style */
+#jest-stats,
+#jest-header,
+#user-info          { display: inline-block;
+					  vertical-align: top; }
+
+#jest .banner       { width: 124px;
+					  height: 50px;
+					  color: #fff;
                       text-decoration: none;
                       text-align: center;
-                      line-height: 1.5em;
+                      text-shadow: 0 -1px rgba(0,0,0,.25);
+                      line-height: .7em;
                       border: 1px solid #888;
-                      background-color: rgba(255, 100, 100, 1);
-                      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,.0)), to(rgba(0,0,0,.25)));
-                      text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
-                      box-shadow: inset 0 0 2px rgba(255,255,255,.75),inset 0 -5px 20px rgba(0,0,0,.15), 0 2px 5px rgba(0,0,0,.25);
-                      -webkit-transition: all .1s linear;
-                      border-radius: 0 0 10px 10px; }
+                      border-top: none;
+                      background-color: #999;
+                      background-image: -webkit-gradient(linear, 
+                      									 0% 0%, 
+                      									 0% 100%, 	
+                      									 from(rgba(0,0,0,.0)), 
+                      									 to(rgba(0,0,0,.25)));
+                      box-shadow: inset 0 0 2px rgba(255,255,255,.5),
+                      			  inset 0 -5px 20px rgba(0,0,0,.15), 
+                      			  0 2px 5px rgba(0,0,0,.25); }
+
+#jest-stats,
+#user-info          { font-size: 12px; }
+#jest-stats         { margin: 0 0 0 70px; }
+#user-info          { margin: 0 69px 0 0; }
+
+#jest-header        { width: 300px; }
+#jest-header h1     { margin: 0;
+					  font-size: 60px;
+					  font-weight: 400;
+					  font-family: Georgia, serif;
+					  text-align: center;
+					  line-height: .9em;
+					  letter-spacing: .2em; }
+#jest-header hr     { margin: auto;
+					  width: 250px; }
+#jest-header h2     { margin: 2px 0 0 0;
+					  font-size: 18px;
+					  font-weight: 100;
+					  text-align: center;
+					  text-shadow: 0 -1px #fff;
+					  letter-spacing: .1em; }
+			
+/* test styles */
+#jest-tests .passed,
+#jest-tests .failed,
+#jest-tests .message     { display: inline-block; }
+#jest-tests .message     { margin: 0; padding: 0; }
+#jest-tests .passed      { background-color: rgba(100, 255, 100, 1); }
+#jest-tests .passed.test { border: 1px solid #395;
+                           background-color: #6c8; }
+#jest-tests .failed      { background-color: #c66; }
+#jest-tests .failed.test { border: 1px solid #933;
+                           background-color: #c66; }
+               
+/* error styles */
+#jest-error              { width: 100%;
+						   margin: -1px auto 0 auto;
+						   border-radius: 0 0 10px 10px;
+						   color: #333;
+						   background-color: rgba(255, 100, 100, 1);
+                           text-decoration: none;
+	                  	   text-align: center;
+	                  	   text-shadow: 0 1px rgba(0,0,0,.25);
+	                  	   font-family: Helvetica, Arial, sans-serif;
+	                  	   line-height: 1.3em;
+	                       display: inline-block;
+	                       border: 1px solid #888;
+	                       background-image: -webkit-gradient(linear, 
+	                      								 0% 0%, 
+	                      								 0% 100%, 	
+	                      								 from(rgba(0,0,0,.0)), 
+	                      								 to(rgba(0,0,0,.25)));
+	                       box-shadow: inset 0 0 2px rgba(255,255,255,.75),
+	                      		       inset 0 -5px 20px rgba(0,0,0,.15), 
+	                      		       0 2px 5px rgba(0,0,0,.25);
+	                       -webkit-transition: all .1s linear; }
+#jest-error .error-bang  { font-size: 16px;
+                           color: rgba(250, 250, 200, 1); }  
+						   
+						   
                       
-.error              { font-size: 16px;
-                      color: rgba(250, 250, 200, 1); }
-                      
-.warning            { margin: 2px 0 2px 30px;
-                      padding-left: 5px;
-                      position: relative;
-                      color: #fff;
-                      font: 14px Arial, Helvetica, sans-serif;
-                      text-decoration: none;
-                      text-align: left;
-                      display: inline-block;
-                      width: 624px;
-                      line-height: 1.5em;
-                      border: 1px solid #888;
-                      background-color: rgba(255, 100, 100, 1);
-                      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,.0)), to(rgba(0,0,0,.25)));
-                      text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
-                      box-shadow: inset 0 0 2px rgba(255,255,255,.75),inset 0 -5px 20px rgba(0,0,0,.15), 0 2px 5px rgba(0,0,0,.25);
-                      -webkit-transition: all .1s linear;
-                      border-radius: 3px 0 0 3px;
-                      z-index: -100; }
-                      
-/* indicator light style */
-#light              { display: inline-block;
-                      height: .8em;
-                      width: .8em; }
-                      
-.running            { background-color: rgba(100, 100, 100, .5); }
-                      
-.passed             { background-color: rgba(100, 255, 100, 1); }
-
-.failed             { background-color: rgba(255, 100, 100, 1); }
-
-.test               { margin: 0 0 0 -3px;
-                      position: relative;
-                      color: #fff;
-                      font: 13px Arial, Helvetica, sans-serif;
-                      text-decoration: none;
-                      text-align: center;
-                      display: inline-block;
-                      line-height: 1.5em;
-                      width: 50px;
-                      height: 20px;
-                      border: 1px solid #888;
-                      background-color: #ccc;
-                      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,.0)), to(rgba(0,0,0,.25)));
-                      text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
-                      box-shadow: inset 0 0 2px rgba(255,255,255,.75),inset 0 -5px 20px rgba(0,0,0,.15), 0 2px 5px rgba(0,0,0,.25);
-                      -webkit-transition: all .1s linear;
-                      border-radius: 3px; }
-
-.failed.test        { border: 1px solid #933;
-                      background-color: #c66; }
-
-.passed.test        { border: 1px solid #395;
-                      background-color: #6c8; }
-                      
-
-
-
-
-
-
