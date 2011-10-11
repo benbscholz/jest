@@ -32,6 +32,5 @@ A test-group is declared with a name, a callback containing the tests, and the e
 		yes(true, 'true is true');
 		no(!true, 'not true is false');
 	}, 2);
-	
-For a complete list of the available test functions (like `yes` & `no`), see the API documentation below.
 
+For a complete set of examples, see `examples/tests.js` or open `html/jest.html` in your browser.
