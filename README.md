@@ -24,7 +24,7 @@ Each test file should begin with the declaration of the module name:
 
 	jest('boolean module');
 	
-Each test-group following this declaration will be considered a member of `module` 'boolean module' (that is, unless another module is declared with `jest('another module');`).
+Each test-group following this declaration will be considered a member of `module` 'boolean module', unless `jest()` is called again with a different module name.
 
 A test-group is declared with a name, a callback containing the tests, and the expected number of tests:
 
