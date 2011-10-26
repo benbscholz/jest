@@ -34,3 +34,7 @@ A test-group is declared with a name, a callback containing the tests, and the e
 	}, 2);
 
 For a complete demonstration of Jest's functions, see `examples/tests.js` or open `html/jest.html` in your browser.
+
+##Run tests
+
+Loading an HTML page with the proper resources and `<div id="jest"></div>` in the body will run Jest.
