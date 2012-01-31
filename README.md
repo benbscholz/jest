@@ -1,5 +1,7 @@
 #Jest: a unit-testing framework for javascript in the browser.
 
+ALPHA
+
 Jest.js simplifies javascript testing.
 
 ##Getting Started
